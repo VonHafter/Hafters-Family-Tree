@@ -70,9 +70,17 @@ function drop(event) {
     if (draggedMember && targetMember) {
         targetMember.children.push(draggedMember.id);
         draggedMember.generation = targetMember.generation + 1;
-        draggedMember.box = targetMember.box;
+        draggedMember.box = findAvailableBox(draggedMember.generation, targetMember.box);
         displayFamilyTree();
     }
+}
+
+function findAvailableBox(generation, startBox) {
+    let box = startBox;
+    while (familyTree.some(member => member.generation === generation && member.box === box)) {
+        box++;
+    }
+    return box;
 }
 
 function drawConnections() {
